@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Dashboard from './Pages/Dashboard';
+import GlobalStyles from './Components/styles/GlobalStyles';
+import PopularMovie from './Pages/PopularMovie';
+import TopRatedMovies from './Pages/TopRatedMovies';
+import UpComing from './Pages/UpComing';
+import MoviePage from './Pages/MoviePage';
+import { MoviesContext } from './MoviesContext';
+import Loading from './Components/LoadingSpinner';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: FC = () => {
+	const { isLoading } = useContext(MoviesContext);
+	console.log(isLoading);
+	return (
+		<>
+			<GlobalStyles />
+			{isLoading ? (
+				<Routes>
+					<Route path="/" element={<Dashboard />} />
+					<Route path="/popularmovies" element={<PopularMovie />} />
+					<Route path="/topratedmovies" element={<TopRatedMovies />} />
+					<Route path="/upcomingmovies" element={<UpComing />} />
+					<Route path="/movie/:id" element={<MoviePage />} />
+				</Routes>
+			) : (
+				<Loading />
+			)}
+		</>
+	);
+};
 
 export default App;
